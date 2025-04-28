@@ -1,6 +1,7 @@
 import { FaHeart, FaBars } from 'react-icons/fa';
 import logoImg from '../assets/img/logo.png';
 import CartDropdown from './CartDropdown';
+import { Link } from 'react-router-dom';
 
 const MainHeader = () => {
   
@@ -10,9 +11,9 @@ const MainHeader = () => {
         <div className="row">
           <div className="col-md-3">
             <div className="header-logo">
-              <a href="#" className="logo">
+              <Link to="/">
                 <img src={logoImg} alt="" />
-              </a>
+              </Link>
             </div>
           </div>
           <div className="col-md-6">
@@ -42,6 +43,7 @@ const MainHeader = () => {
               <div className="menu-toggle">
                 <a href="#">
                   <FaBars />
+                  <br/>
                   <span>Menu</span>
                 </a>
               </div>
