@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import { FaHeart, FaShoppingCart, FaBars } from 'react-icons/fa';
+import { FaHeart, FaBars } from 'react-icons/fa';
 import logoImg from '../assets/img/logo.png';
-import Cart from './Cart';
-import CartDropdown from './Cart';
+import CartDropdown from './CartDropdown';
 
 const MainHeader = () => {
   
@@ -32,9 +30,10 @@ const MainHeader = () => {
           </div>
           <div className="col-md-3 clearfix">
             <div className="header-ctn">
-              <div>
+              <div classNamme="justify-content-between">
                 <a href="#">
                   <FaHeart />
+                  <br></br>
                   <span>Your Wishlist</span>
                   <div className="qty">2</div>
                 </a>

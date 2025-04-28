@@ -22,6 +22,7 @@ const CartDropdown = () => {
         aria-expanded={showCart}  // Dynamic aria-expanded value
       >
         <FaShoppingCart />
+        <br></br>
         <span>Your Cart</span>
         <div className="qty">3</div>
       </a>
