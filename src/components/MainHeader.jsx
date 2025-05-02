@@ -31,7 +31,7 @@ const MainHeader = () => {
           </div>
           <div className="col-md-3 clearfix">
             <div className="header-ctn">
-              <div classNamme="justify-content-between">
+              <div className="justify-content-between">
                 <a href="#">
                   <FaHeart />
                   <br></br>
