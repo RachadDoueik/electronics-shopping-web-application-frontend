@@ -24,7 +24,6 @@ const AuthPage = () => {
     try {
       const res = await axios.post('http://localhost:9193/api/auth/login', signInData);
       localStorage.setItem('token', res.data.token);
-      toast.success('Login successful');
       setSignInData({ email: '', password: '' });
     } catch (error) {
       toast.error('Login failed: ' + (error.response?.data?.message || error.message));
@@ -35,7 +34,6 @@ const AuthPage = () => {
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:9193/api/auth/signup', signUpData);
-      toast.success('Signup successful');
       setSignUpData({
         name: '',
         email: '',
