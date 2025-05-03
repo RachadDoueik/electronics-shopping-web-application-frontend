@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import React, { useState  , useEffect, use } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import SignInForm from '../components/SignInForm';
 import SignUpForm from '../components/SignUpForm';
 import AuthFormWrapper from '../components/AuthFormWrapper';
 import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { useAuth } from '../context/AuthenticationContext';
+import { useNavigate } from 'react-router-dom';   
 
 const AuthPage = () => {
+
+  const { state , login , signUp } = useAuth();
   const [isSignIn, setIsSignIn] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (state.isAuthenticated == true) {
+      navigate('/');
+    }}, [state.isAuthenticated]);
 
   const [signInData, setSignInData] = useState({ email: '', password: '' });
   const [signUpData, setSignUpData] = useState({
@@ -16,35 +24,30 @@ const AuthPage = () => {
     email: '',
     password: '',
     phone: '',
-    address: ''
+    address: '',
+    role: 'USER'
   });
 
   const handleSignInSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:9193/api/auth/login', signInData);
-      localStorage.setItem('token', res.data.token);
-      setSignInData({ email: '', password: '' });
-    } catch (error) {
-      toast.error('Login failed: ' + (error.response?.data?.message || error.message));
-    }
+    login(signInData);
   };
 
   const handleSignUpSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:9193/api/auth/signup', signUpData);
+    const response = await signUp(signUpData);
+    if (response) {
       setSignUpData({
         name: '',
         email: '',
         password: '',
         phone: '',
         address: '',
-        role: 'USER'
       });
-      setIsSignIn(true);
-    } catch (error) {
-      toast.error('Signup failed: ' + (error.response?.data?.message || error.message));
+      login({
+        email: signUpData.email,
+        password: signUpData.password,
+      });
     }
   };
 

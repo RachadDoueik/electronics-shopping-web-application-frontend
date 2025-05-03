@@ -1,7 +1,18 @@
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaDollarSign, FaUserAlt } from 'react-icons/fa';
 import { useNavigate , Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthenticationContext';
 
 const TopHeader = () => {
+
+  const { state } = useAuth();
+
+  const navigate = useNavigate();
+
+  const logoutUser = () => {
+    logout();
+    navigate('/');
+  }
+  
   return (
     <div id="top-header">
       <div className="container">
@@ -12,7 +23,8 @@ const TopHeader = () => {
         </ul>
         <ul className="header-links pull-right">
           <li><a href="#"><FaDollarSign color="red" /> USD</a></li>
-          <li><Link to='/authentication'><FaUserAlt color="red" /> My Account</Link></li>
+          {state.isAuthenticated ? (<li><Link to='/account'><FaUserAlt color="red" />My Account</Link></li>) 
+          : (<li><Link to='/authentication'><FaUserAlt color="red" /> Sign In</Link></li>)}
         </ul>
       </div>
     </div>
