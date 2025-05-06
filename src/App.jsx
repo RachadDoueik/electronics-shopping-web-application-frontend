@@ -4,11 +4,12 @@ import AuthPage from "./pages/AuthPage";
 import Header from "./components/Header";
 import UserInfo from "./pages/UserInfo";
 import { ToastContainer } from "react-toastify";
-import { AuthProvider } from "./context/AuthenticationContext";
+import { Provider } from "react-redux";
+import store from './redux/store';
 
 function App() {
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <BrowserRouter>
       <ToastContainer />
       <Header />
@@ -19,7 +20,7 @@ function App() {
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </BrowserRouter>
-    </AuthProvider>
+    </Provider>
   );
 }
 

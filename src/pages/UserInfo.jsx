@@ -1,51 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthenticationContext';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserInfo, clearUserInfo } from '../redux/slices/userSlice';
+import { logout as logoutAction } from '../redux/slices/authSlice';
 
 const UserInfo = () => {
-  const { state  , logout } = useAuth(); // Contains { user, token }
-  const [userInfo, setUserInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const logoutUser = () => {
-    logout();
-    navigate('/');
-  }
+  const { token } = useSelector((state) => state.auth);
+  const { data: userInfo, loading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const res = await axios.get('http://localhost:9193/api/users/account', {
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-            Accept: 'application/json',
-          },
-        });
-        setUserInfo(res.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (state.token) {
-      fetchUserInfo();
-    } else {
-      setLoading(false);
+    if (token) {
+      dispatch(fetchUserInfo(token));
     }
-  }, [state.token]);
+  }, [token, dispatch]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const logoutUser = () => {
+    dispatch(logoutAction());
+    dispatch(clearUserInfo());
+    navigate('/');
+  };
 
-  if (!userInfo) {
-    return <div>User not found or not authenticated.</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!userInfo) return <div>User not found or not authenticated.</div>;
 
   return (
     <div className="container mt-5">
@@ -55,7 +35,12 @@ const UserInfo = () => {
         <p><strong>Email:</strong> {userInfo.email}</p>
         <p><strong>Phone:</strong> {userInfo.phone}</p>
         <p><strong>Address:</strong> {userInfo.address}</p>
-        <button onClick={() => logoutUser()}>LOGOUT</button>
+        <button
+          onClick={logoutUser}
+          className="bg-red-500 text-white px-4 py-2 mt-3 rounded hover:bg-red-600"
+        >
+          LOGOUT
+        </button>
       </div>
     </div>
   );

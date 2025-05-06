@@ -1,23 +1,20 @@
-import React, { useState  , useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import SignInForm from '../components/SignInForm';
 import SignUpForm from '../components/SignUpForm';
 import AuthFormWrapper from '../components/AuthFormWrapper';
 import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
-import { useAuth } from '../context/AuthenticationContext';
-import { useNavigate } from 'react-router-dom';   
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, signUp } from '../redux/slices/authSlice';
 
 const AuthPage = () => {
 
-  const { state , login , signUp } = useAuth();
-  const [isSignIn, setIsSignIn] = useState(true);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (state.isAuthenticated == true) {
-      navigate('/');
-    }}, [state.isAuthenticated]);
-
+  const [isSignIn, setIsSignIn] = useState(true);
   const [signInData, setSignInData] = useState({ email: '', password: '' });
   const [signUpData, setSignUpData] = useState({
     name: '',
@@ -25,30 +22,21 @@ const AuthPage = () => {
     password: '',
     phone: '',
     address: '',
-    role: 'USER'
+    role: 'USER',
   });
 
-  const handleSignInSubmit = async (e) => {
+  useEffect(() => {
+    if (isAuthenticated) navigate('/');
+  }, [isAuthenticated]);
+
+  const handleSignInSubmit = (e) => {
     e.preventDefault();
-    login(signInData);
+    dispatch(login(signInData));
   };
 
-  const handleSignUpSubmit = async (e) => {
+  const handleSignUpSubmit = (e) => {
     e.preventDefault();
-    const response = await signUp(signUpData);
-    if (response) {
-      setSignUpData({
-        name: '',
-        email: '',
-        password: '',
-        phone: '',
-        address: '',
-      });
-      login({
-        email: signUpData.email,
-        password: signUpData.password,
-      });
-    }
+    dispatch(signUp(signUpData));
   };
 
   return (
@@ -57,13 +45,13 @@ const AuthPage = () => {
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
             <div className="auth-tabs">
-              <button 
+              <button
                 className={`auth-tab ${isSignIn ? 'active' : ''}`}
                 onClick={() => setIsSignIn(true)}
               >
                 <FaSignInAlt /> Sign In
               </button>
-              <button 
+              <button
                 className={`auth-tab ${!isSignIn ? 'active' : ''}`}
                 onClick={() => setIsSignIn(false)}
               >
@@ -73,16 +61,16 @@ const AuthPage = () => {
 
             <AuthFormWrapper>
               {isSignIn ? (
-                <SignInForm 
-                  formData={signInData} 
-                  setFormData={setSignInData} 
-                  handleSubmit={handleSignInSubmit} 
+                <SignInForm
+                  formData={signInData}
+                  setFormData={setSignInData}
+                  handleSubmit={handleSignInSubmit}
                 />
               ) : (
-                <SignUpForm 
-                  formData={signUpData} 
-                  setFormData={setSignUpData} 
-                  handleSubmit={handleSignUpSubmit} 
+                <SignUpForm
+                  formData={signUpData}
+                  setFormData={setSignUpData}
+                  handleSubmit={handleSignUpSubmit}
                 />
               )}
             </AuthFormWrapper>

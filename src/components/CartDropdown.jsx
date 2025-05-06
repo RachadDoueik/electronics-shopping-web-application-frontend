@@ -11,6 +11,7 @@ const CartDropdown = () => {
   const [cartItems, setCartItems] = useState([
     { id: 1, name: "Product 1", price: 980.00, quantity: 1 },
     { id: 2, name: "Product 2", price: 980.00, quantity: 3 },
+    { id: 3, name: "Product 3", price: 500.00, quantity: 10 },
   ]);
 
   return (
@@ -33,7 +34,6 @@ const CartDropdown = () => {
            {cartItems.map((item) => (
               <div className="product-widget" key={item.id}>
                 <div className="product-img">
-                  <img src="https://via.placeholder.com/150" alt="" />
                 </div>
                 <div className="product-body">
                   <h3 className="product-name"><a href="#">{item.name}</a></h3>
