@@ -2,9 +2,14 @@ import { FaHeart, FaBars } from 'react-icons/fa';
 import logoImg from '../assets/img/logo.png';
 import CartDropdown from './CartDropdown';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
 
 const MainHeader = () => {
-  
+
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <div id="header">
       <div className="container">
@@ -29,6 +34,7 @@ const MainHeader = () => {
               </form>
             </div>
           </div>
+          { isAuthenticated &&
           <div className="col-md-3 clearfix">
             <div className="header-ctn">
               <div className="justify-content-between">
@@ -49,6 +55,7 @@ const MainHeader = () => {
               </div>
             </div>
           </div>
+               }
         </div>
       </div>
     </div>

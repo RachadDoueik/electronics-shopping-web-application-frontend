@@ -15,7 +15,6 @@ const TopHeader = () => {
           <li><a href="#"><FaMapMarkerAlt color="red" /> Beirut</a></li>
         </ul>
         <ul className="header-links pull-right">
-          <li><a href="#"><FaDollarSign color="red" /> USD</a></li>
           {isAuthenticated ? (<li><Link to='/account'><FaUserAlt color="red" />My Account</Link></li>) 
           : (<li><Link to='/authentication'><FaUserAlt color="red" /> Sign In</Link></li>)}
         </ul>
