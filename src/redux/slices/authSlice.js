@@ -10,6 +10,8 @@ const initialState = {
 };
 
 // Thunks
+
+//LOGIN
 export const login = createAsyncThunk('auth/login', async (data, thunkAPI) => {
   try {
     const res = await axios.post('http://localhost:9193/api/auth/login', data);
@@ -19,6 +21,8 @@ export const login = createAsyncThunk('auth/login', async (data, thunkAPI) => {
   }
 });
 
+
+//SIGNUP
 export const signUp = createAsyncThunk('auth/signup', async (data, thunkAPI) => {
   try {
     const res = await axios.post('http://localhost:9193/api/auth/signup', data);
